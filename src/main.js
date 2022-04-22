@@ -8,4 +8,7 @@ let config = {
 let game = new Phaser.Game(config);
 
 //reserve keyboard vars
-let keyUP, keyDOWN, keyRIGHT, KeyLEFT, stopped;
+let keyUP, keyDOWN, keyRIGHT, KeyLEFT;
+
+//reserve stopped bool flag
+let stopper;
