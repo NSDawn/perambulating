@@ -1,11 +1,12 @@
 //statics prefab
 class Statics extends Phaser.GameObjects.Sprite {
-    constructor(scene, x, y, texture, frame) {
-        super(scene, x, y, texture, frame);
+    constructor(scene, x, y, texture, frame,lane) {
+        super(scene, x, y, texture, frame,lane);
     
     //add object to existing scene
     scene.add.existing(this);
     this.moveSpeed = 3;
+    this.lane = lane;
     }
 
     update(stopped,fast){
@@ -17,10 +18,11 @@ class Statics extends Phaser.GameObjects.Sprite {
         } else {
             this.moveSpeed = 3;
         }
-        this.x += this.moveSpeed
-        //destroy if mushroom reaches the right side of the screen
+        this.x += this.moveSpeed;
+        //
         if(this.x >= game.config.width - this.width){
             this.x = 0;
+            this.y = (this.lane * game.config.height/5) + (Math.floor(Math.random()*(game.config.height/5-this.height)));
         }
     }
 }
