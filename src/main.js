@@ -10,5 +10,5 @@ let game = new Phaser.Game(config);
 //reserve keyboard vars
 let keyUP, keyDOWN, keyRIGHT, KeyLEFT;
 
-//reserve stopped bool flag
-let stopped;
+//reserve stopped and fast bool flag
+let stopped, fast;

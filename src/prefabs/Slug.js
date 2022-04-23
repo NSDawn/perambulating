@@ -12,18 +12,23 @@ class Slug extends Phaser.GameObjects.Sprite {
     }
 
     update(stopped){
-        if(!stopped){
+        if(KeyLEFT.isDown){
+            this.speedMax = 9; 
+         } else if(Phaser.Input.Keyboard.JustUp(KeyLEFT)) {
+             this.speedMax = 3;
+         }
+        if(!stopped){    
         if(keyUP.isDown && this.y >= this.height + 32){ // if we are not at the top
             if(this.moveSpeed<this.speedMax){ // and we aren't at max speed
                 this.moveSpeed+= this.speedRate; // increase the speed by the rate
             }
-            this.speedRate+= 0.02; // increase the rate
+            this.speedRate*= 1.2; // increase the rate
             this.y -= this.moveSpeed; // move up by the speed
         } else if (keyDOWN.isDown && this.y <= game.config.height -this.height - 32){ //else if we aren't at the bottom
             if(this.moveSpeed<this.speedMax){ //and we aren't at the max speed
                 this.moveSpeed+= this.speedRate; // increase the speed by the rate
             }
-            this.speedRate+= 0.02; // increase the rate
+            this.speedRate*= 1.2; // increase the rate
             this.y += this.moveSpeed; // move down by the speed
         }
         if(Phaser.Input.Keyboard.JustUp(keyUP)||Phaser.Input.Keyboard.JustUp(keyDOWN)){ // after releasing up or down
