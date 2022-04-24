@@ -14,9 +14,9 @@ class Statics extends Phaser.GameObjects.Sprite {
         if(stopped){
             this.moveSpeed = 0;
         } else if(fast) {
-            this.moveSpeed = 6;
+            this.moveSpeed = 4;
         } else {
-            this.moveSpeed = 3;
+            this.moveSpeed = 2;
         }
         this.x += this.moveSpeed;
         //
