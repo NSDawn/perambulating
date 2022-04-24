@@ -23,6 +23,7 @@ class Statics extends Phaser.GameObjects.Sprite {
         if(this.x >= game.config.width - this.width){
             this.x = 0;
             this.y = (this.lane * game.config.height/5) + (Math.floor(Math.random()*(game.config.height/5-this.height)));
+            //if all the statics are just different frames on 1 file we can make them random each time they reset here.
         }
     }
 }
