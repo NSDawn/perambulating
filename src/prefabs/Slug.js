@@ -1,10 +1,9 @@
 //const declaration
-const X_MAX_VELOCITY = 0;
-const X_ACC = 0;
-const X_DEC = 0;
-const LF_BOUND = 0;
-const RT_BOUND = 0;
-
+const X_MAX_VELOCITY = 4;
+const X_ACC = 0.1;
+const X_DEC = 0.075;
+let LF_BOUND = 0;
+let RT_BOUND = 0;
 const Y_MAX_VELOCITY = 4;
 const Y_MAX_VELOCITY_FAST = 6;
 const Y_ACC = 0.1;
@@ -38,6 +37,8 @@ class Slug extends Phaser.GameObjects.Sprite {
 
         UP_BOUND = this.height + 32;
         DN_BOUND = game.config.height - this.height - 32;
+        LF_BOUND = game.config.width  - 76;
+        RT_BOUND = game.config.width  - 64;
 
     }
 
@@ -46,16 +47,21 @@ class Slug extends Phaser.GameObjects.Sprite {
         // updating location based on displacement every frame, 
         //    making sure it does not exceed the bounds
         if (this.d.x > 0) { // x
-            this.x = Math.max(this.x + this.d.x, RT_BOUND);
+            this.x = Math.min(this.x + this.d.x, RT_BOUND);
         } else if (this.d.x < 0) {
-            this.x = Math.min(this.x + this.d.x, LF_BOUND);
+            this.x = Math.max(this.x + this.d.x, LF_BOUND);
+        }
+        if(this.x == RT_BOUND|| this.x == LF_BOUND||stopped){
+            this.d.x= 0;
         }
         if (this.d.y < 0) { // y
             this.y = Math.max(this.y + this.d.y, UP_BOUND);
         } else if (this.d.y > 0) {
             this.y = Math.min(this.y + this.d.y, DN_BOUND);
         }
-        
+        if(this.y == UP_BOUND|| this.y == DN_BOUND){
+            this.d.y= 0;
+        }
          // (x) accelerate if keydown
         if (!keyDOWN.isDown && keyUP.isDown && !stopped) {
             this.d.y = Math.max(this.d.y - this.ACC.y, - this.maxd.y);
@@ -81,6 +87,11 @@ class Slug extends Phaser.GameObjects.Sprite {
             } else {
                 this.d.y = 0;
             } 
+        }
+        if(fast && !stopped){
+            this.d.x = Math.max(this.d.x - this.ACC.x, - this.maxd.x);
+        }else if(!fast && !stopped){
+            this.d.x = Math.min(this.d.x + this.ACC.x, + this.maxd.x);
         }
         // (y) acceleration would go here 
     }

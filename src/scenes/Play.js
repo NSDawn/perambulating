@@ -21,8 +21,8 @@ class Play extends Phaser.Scene {
     create(){
         this.frame = 0;
         this.add.text(20,20, "oh wow");
-        this.playerSlug = new Slug(this, game.config.width-32
-            , game.config.height/2, 'slug', 0).setOrigin(0,0.5); // add slug to the scene
+        this.playerSlug = new Slug(this, game.config.width-64
+            , game.config.height/2, 'slug', 0).setOrigin(0.3,0.5); // add slug to the scene
         this.statlist = ['rock1','rock2','stick1','stick2','stick3'];    
         this.row1= [];
         for (let index = 0; index < 5; index++) {
@@ -55,23 +55,34 @@ class Play extends Phaser.Scene {
             key: 'move',
             frames: this.anims.generateFrameNumbers('slug', {start: 0, end: 7, first:0}),
             frameRate: 16,
-            repeat: -1
+            repeat: 0
         });
-        this.playerSlug.play('move');
+        this.playerSlug.play('move'); 
     }
  
     update(){
         if(keyRIGHT.isDown){
             stopped = true; //stop if right key is pressed
+            this.playerSlug.anims.stop();
         }else{
             stopped = false; //go if not pressed
         }
         if(KeyLEFT.isDown){
             fast= true; //go fast is left is pressed
+            if(!this.playerSlug.anims.isPlaying)
+                {
+                    this.playerSlug.play({key: 'move', frameRate: 32});
+                }
+ 
         } else {
             fast = false; //don't if it's is not
+            if(!this.playerSlug.anims.isPlaying)
+                {
+                this.playerSlug.play('move');
+                }
         }
-        this.playerSlug.update(stopped); //run slug update function
+        
+        this.playerSlug.update(stopped,fast); //run slug update function
         this.row1.forEach( element => {
             element.update(stopped,fast);
         });
@@ -133,4 +144,7 @@ class Play extends Phaser.Scene {
                 return false;
             }
     }
+    
+
+
 }

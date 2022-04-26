@@ -1,7 +1,12 @@
 let config = {
     type: Phaser.CANVAS,
     width: 640,
-    height: 360,
+    height: 320,
+    scale: {
+        mode: Phaser.Scale.FIT,
+        autoCenter: Phaser.Scale.CENTER_BOTH
+    },
+    pixelArt: true,
     scene: [Menu,Play]
 }
 

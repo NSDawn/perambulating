@@ -1,6 +1,6 @@
 UI, main page, rules
 High score for session
-Implement slime mechanics
+Implement slime mechanics stop activation cost.
 Slowing on statics not failing
 Add snakes and enemy pool
 Add dew, puddles, mushrooms
