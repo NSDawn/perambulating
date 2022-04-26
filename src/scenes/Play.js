@@ -5,7 +5,12 @@ class Play extends Phaser.Scene {
 
     preload(){
         //load the slug and art
-        this.load.image('slug', './assets/slug.png');
+        this.load.spritesheet('slug', './assets/ss_slug_lfp.png',{
+            frameWidth: 32,
+            frameHeight: 16,
+            startFrame:0,
+            endFrame:7
+        });
         this.load.image('rock1','./assets/1616rock01.png');
         this.load.image('rock2','./assets/1616rock02.png');
         this.load.image('stick1','./assets/1616sticks01.png');
@@ -14,9 +19,10 @@ class Play extends Phaser.Scene {
     }
 
     create(){
+        this.frame = 0;
         this.add.text(20,20, "oh wow");
         this.playerSlug = new Slug(this, game.config.width-32
-            , game.config.height/2, 'slug').setOrigin(0,0.5); // add slug to the scene
+            , game.config.height/2, 'slug', 0).setOrigin(0,0.5); // add slug to the scene
         this.statlist = ['rock1','rock2','stick1','stick2','stick3'];    
         this.row1= [];
         for (let index = 0; index < 5; index++) {
@@ -44,6 +50,14 @@ class Play extends Phaser.Scene {
         KeyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
         stopped = false; //declare stopped as false
         fast = false; //declare fast as false
+
+        this.anims.create({
+            key: 'move',
+            frames: this.anims.generateFrameNumbers('slug', {start: 0, end: 7, first:0}),
+            frameRate: 16,
+            repeat: -1
+        });
+        this.playerSlug.play('move');
     }
  
     update(){
@@ -57,7 +71,6 @@ class Play extends Phaser.Scene {
         } else {
             fast = false; //don't if it's is not
         }
-        
         this.playerSlug.update(stopped); //run slug update function
         this.row1.forEach( element => {
             element.update(stopped,fast);
