@@ -1,0 +1,13 @@
+UI, main page, rules
+High score for session
+Implement slime mechanics
+Slowing on statics not failing
+Add snakes and enemy pool
+Add dew, puddles, mushrooms
+mushroom spawn delay
+get random waves implemented
+
+
+STRETCH
+foley sounds/music
+even more enemies.
