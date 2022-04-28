@@ -13,13 +13,6 @@ const Y_DEC_STOPPED = 0.6;
 let UP_BOUND = 0; // reinitialized @super()
 let DN_BOUND = 0; // reinitialized @super()
 
-class v2 {
-    constructor(one,two){
-        this.x = one;
-        this.y = two;
-    }
-}
-
 //slug prefab
 class Slug extends Phaser.GameObjects.Sprite {
     constructor(scene, x, y, texture, frame){
@@ -39,6 +32,8 @@ class Slug extends Phaser.GameObjects.Sprite {
         DN_BOUND = game.config.height - this.height - 32;
         LF_BOUND = game.config.width  - 76;
         RT_BOUND = game.config.width  - 64;
+
+        cl()
 
     }
 
