@@ -21,35 +21,47 @@ class Play extends Phaser.Scene {
     create(){
         this.frame = 0;
         this.add.text(20,20, "oh wow");
-        this.playerSlug = new Slug(this, game.config.width-64
-            , game.config.height/2, 'slug', 0).setOrigin(0.3,0.5); // add slug to the scene
+        
         this.statlist = ['rock1','rock2','stick1','stick2','stick3'];    
-        this.row1= [];
-        for (let index = 0; index < 5; index++) {
-            this.row1[index] = new Statics(this, 0, index*game.config.height/5 + 32, this.statlist[Math.floor(Math.random()*5)],0,index).setOrigin(0.75,0.5);
-        }
-        this.row2= [];
-        for (let index = 0; index < 5; index++) {
-            this.row2[index] = new Statics(this, -game.config.width/5, index*game.config.height/5 + 32, this.statlist[Math.floor(Math.random()*5)],0,index).setOrigin(0.75,0.5);
-        }
-        this.row3= [];
-        for (let index = 0; index < 5; index++) {
-            this.row3[index] = new Statics(this, 2*-game.config.width/5, index*game.config.height/5 + 32, this.statlist[Math.floor(Math.random()*5)],0,index).setOrigin(0.75,0.5);
-        }
-        this.row4= [];
-        for (let index = 0; index < 5; index++) {
-            this.row4[index] = new Statics(this, 3*-game.config.width/5, index*game.config.height/5 + 32, this.statlist[Math.floor(Math.random()*5)],0,index).setOrigin(0.75,0.5);
-        }
-        this.row5= [];
-        for (let index = 0; index < 5; index++) {
-            this.row5[index] = new Statics(this, 4*-game.config.width/5, index*game.config.height/5 + 32, this.statlist[Math.floor(Math.random()*5)],0,index).setOrigin(0.75,0.5);
-        }
+       
+       this.statics = [];
+       this.fillRows();
+
+       this.cols = [];
+       this.col1 = [];
+       this.col2 = [];
+       this.col3 = [];
+       this.col4 = [];
+       this.col5 = [];
+       this.cols.push(this.col1,this.col2,this.col3,this.col4,this.col5);
+        
+       for (let index = 0; index < this.cols.length; index++) {
+           this.statics.forEach(element => {
+               this.cols[index].push(element[Math.floor(Math.random()*element.length)]);
+
+           });
+           this.emptyRows();
+           this.fillRows();
+           this.cols[index].forEach(element => {
+               element.x = index*-game.config.width/5;
+               element.texture = this.statlist[Math.floor(Math.random()*5)];
+           });
+       }
+
+       
+
+
         keyDOWN = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN); //declare keys
         keyUP   = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
         keyRIGHT= this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
         KeyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
         stopped = false; //declare stopped as false
         fast = false; //declare fast as false
+        colliding = false;
+        this.anyColliding = false;
+
+        this.playerSlug = new Slug(this, game.config.width-64
+            , game.config.height/2, 'slug', 0).setOrigin(0.3,0.5); // add slug to the scene
 
         this.anims.create({
             key: 'move',
@@ -83,56 +95,21 @@ class Play extends Phaser.Scene {
         }
         
         this.playerSlug.update(stopped,fast); //run slug update function
-        this.row1.forEach( element => {
-            element.update(stopped,fast);
+        
+        this.cols.forEach(element => {
+            element.forEach(elem =>{
+                elem.update(stopped,fast,colliding);
+            });
         });
-        this.row2.forEach( element => {
-            element.update(stopped,fast);
+        this.anyColliding = false;
+        this.cols.forEach(element =>{
+            element.forEach(elem =>{
+                if(this.checkCollisionSimple(this.playerSlug,elem)){
+                    this.anyColliding = true;
+                }
+            })
         });
-        this.row3.forEach( element => {
-            element.update(stopped,fast);
-        });
-        this.row4.forEach( element => {
-            element.update(stopped,fast);
-        });
-        this.row5.forEach( element => {
-            element.update(stopped,fast);
-        });
-        for (let index = 0; index < 5; index++) {
-            if(this.checkCollisionSimple(this.playerSlug,this.row1[index])){
-                console.log('col with r1');
-                this.scene.restart();
-            }
-            
-        }
-        for (let index = 0; index < 5; index++) {
-            if(this.checkCollisionSimple(this.playerSlug,this.row2[index])){
-                console.log('col with r2');
-                this.scene.restart();
-            }
-            
-        }
-        for (let index = 0; index < 5; index++) {
-            if(this.checkCollisionSimple(this.playerSlug,this.row3[index])){
-                console.log('col with r3');
-                this.scene.restart();
-            }
-            
-        }
-        for (let index = 0; index < 5; index++) {
-            if(this.checkCollisionSimple(this.playerSlug,this.row4[index])){
-                console.log('col with r4');
-                this.scene.restart();
-            }
-            
-        }
-        for (let index = 0; index < 5; index++) {
-            if(this.checkCollisionSimple(this.playerSlug,this.row5[index])){
-                console.log('col with r5');
-                this.scene.restart();
-            }
-            
-        }
+        colliding = this.anyColliding;
     }
 
     checkCollisionSimple(slug, thing){
@@ -144,7 +121,19 @@ class Play extends Phaser.Scene {
                 return false;
             }
     }
-    
+
+    fillRows(){
+       this.r1 = [new Statics(this, -32, 0*game.config.height/5 + 32, this.statlist[Math.floor(Math.random()*5)],0,0).setOrigin(0.75,0.5)];
+       this.r2 = [new Statics(this, -32, 1*game.config.height/5 + 32, this.statlist[Math.floor(Math.random()*5)],0,1).setOrigin(0.75,0.5)];
+       this.r3 = [new Statics(this, -32, 2*game.config.height/5 + 32, this.statlist[Math.floor(Math.random()*5)],0,2).setOrigin(0.75,0.5)];
+       this.r4 = [new Statics(this, -32, 3*game.config.height/5 + 32, this.statlist[Math.floor(Math.random()*5)],0,3).setOrigin(0.75,0.5)];
+       this.r5 = [new Statics(this, -32, 4*game.config.height/5 + 32, this.statlist[Math.floor(Math.random()*5)],0,4).setOrigin(0.75,0.5)];
+
+       this.statics.push(this.r1,this.r2,this.r3,this.r4,this.r5);
+    }
+    emptyRows(){
+        this.statics = [];
+    }
 
 
 }
