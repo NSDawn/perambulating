@@ -5,9 +5,8 @@ Add snakes and enemy pool
 use atlasing for snakes to snag those 5 points.
 Add dew, puddles, mushrooms
 mushroom spawn delay
-music (not a stretch but a 5 point value)
 
 
 STRETCH
-foley sounds/music
+foley sounds
 even more enemies.
