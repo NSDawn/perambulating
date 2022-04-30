@@ -4,6 +4,9 @@ class Play extends Phaser.Scene {
     }
 
     preload(){
+        this.load.audio('main', './assets/Play_theme_normal.mp3');
+        this.load.audio('main_dist', './assets/Play_theme_distorted.mp3');
+
         //load the slug and art
         this.load.spritesheet('slug', './assets/ss_slug_lfp.png',{
             frameWidth: 32,
@@ -21,6 +24,7 @@ class Play extends Phaser.Scene {
     create(){
         this.frame = 0;
         this.add.text(20,20, "oh wow");
+        this.vol = 0.0;
         
         this.statlist = ['rock1','rock2','stick1','stick2','stick3'];    
        
@@ -46,9 +50,14 @@ class Play extends Phaser.Scene {
                element.x = index*-game.config.width/5;
                element.texture = this.statlist[Math.floor(Math.random()*5)];
            });
+
+        
        }
 
-       
+       this.playtheme = this.sound.add('main',{loop:true});
+        this.playtheme_dist = this.sound.add('main_dist',{volume: 0.0,loop:true,});
+        this.playtheme.play();
+        this.playtheme_dist.play();
 
 
         keyDOWN = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN); //declare keys
@@ -110,6 +119,19 @@ class Play extends Phaser.Scene {
             })
         });
         colliding = this.anyColliding;
+        if(stopped){
+            this.playtheme.setRate(0.6);
+            this.playtheme_dist.setRate(0.6);
+        } else if(fast){
+            this.playtheme.setRate(1.2);
+            this.playtheme_dist.setRate(1.2);
+        } else {
+            this.playtheme.setRate(1.0);
+            this.playtheme_dist.setRate(1.0);
+        }
+
+        if (this.vol < 1){this.vol+= (1/9000)};
+        this.playtheme_dist.setVolume(this.vol);
     }
 
     checkCollisionSimple(slug, thing){
