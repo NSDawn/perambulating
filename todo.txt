@@ -1,11 +1,11 @@
 UI, main page, rules
 High score for session
 Implement slime mechanics stop activation cost.
-Slowing on statics not failing
 Add snakes and enemy pool
+use atlasing for snakes to snag those 5 points.
 Add dew, puddles, mushrooms
 mushroom spawn delay
-get random waves implemented
+music (not a stretch but a 5 point value)
 
 
 STRETCH
