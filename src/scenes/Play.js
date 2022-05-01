@@ -74,9 +74,7 @@ class Play extends Phaser.Scene {
        this.enemcol1 = [];
        this.enemcol2 = [];
        this.enemcol3 = [];
-       this.enemcol4 = [];
-       this.enemcol5 = [];
-       this.enemcols.push(this.enemcol1,this.enemcol2,this.enemcol3,this.enemcol4,this.enemcol5);
+       this.enemcols.push(this.enemcol1,this.enemcol2,this.enemcol3);
         
        for (let index = 0; index < this.enemcols.length; index++) {
            this.snakes.forEach(element => {
@@ -86,7 +84,7 @@ class Play extends Phaser.Scene {
            this.emptyERows();
            this.fillERows();
            this.enemcols[index].forEach(element => {
-               element.x = index*-game.config.width/5-32;
+               element.x = index*-game.config.width/3-32;
                element.texture = this.statlist[Math.floor(Math.random()*3)];
            });
 
@@ -110,8 +108,9 @@ class Play extends Phaser.Scene {
         colliding = false;
         this.anyColliding = false;
 
-        this.playerSlug = new Slug(this, game.config.width-64
-            , game.config.height/2, 'slug', 0).setOrigin(0.3,0.5); // add slug to the scene
+         // add slug to the scene
+         this.playerSlug = new Slug(this, game.config.width-64
+            , game.config.height/2, 'slug', 0).setOrigin(0.3,0.5);
 
         this.anims.create({
             key: 'move',
@@ -148,6 +147,7 @@ class Play extends Phaser.Scene {
                 repeat: 0,
             });
         }
+        
         
 
         difficulty = 0; //declare difficulty at 0 at the beginning of the game
@@ -188,14 +188,14 @@ class Play extends Phaser.Scene {
 
         this.enemcols.forEach(element => {
             element.forEach(elem =>{
-                elem.update(stopped,fast, colliding);
+                elem.update(stopped,fast,colliding);
             });
         });
 
         this.anyColliding = false;
         this.cols.forEach(element =>{
             element.forEach(elem =>{
-                if(this.checkCollisionSimple(this.playerSlug,elem) && !elem.blank){
+                if(!elem.blank && this.checkCollisionSimple(this.playerSlug,elem)){
                     this.anyColliding = true;
                 }
             })
@@ -203,11 +203,11 @@ class Play extends Phaser.Scene {
 
         this.enemcols.forEach(element =>{
             element.forEach(elem =>{
-                if(!elem.anims.isPlaying && !elem.blank)
+                if(!elem.blank && !elem.anims.isPlaying)
                 {
                   elem.play('idle');
                 }
-                if(this.checkCollisionSimple(this.playerSlug,elem) && !elem.blank){
+                if(!elem.blank && this.checkCollisionSimple(this.playerSlug,elem)){
                  if(elem.colcounter()){
                     slime = 0; 
                     elem.play('attack');
@@ -263,8 +263,8 @@ class Play extends Phaser.Scene {
 
     fillERows(){
         function randoff(u) { return (Math.random()) * u / 10;} 
-       this.er1 = [new Snakes(this, -32, 0*game.config.height/3 + 96, this.statlist[Math.floor(Math.random()*5)],0,1).setOrigin(0.75,0.5)];
-       this.er2 = [new Snakes(this, -32, 1*game.config.height/3 + 96, this.statlist[Math.floor(Math.random()*5)],0,2).setOrigin(0.75,0.5)];
+       this.er1 = [new Snakes(this, -32, 0*game.config.height/3 + 48, this.statlist[Math.floor(Math.random()*5)],0,1).setOrigin(0.75,0)];
+       this.er2 = [new Snakes(this, -32, 1*game.config.height/3 + 48, this.statlist[Math.floor(Math.random()*5)],0,2).setOrigin(0.75,0)];
 
        this.snakes.push(this.er1,this.er2);
     }

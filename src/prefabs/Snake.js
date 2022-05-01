@@ -35,7 +35,7 @@ class Snakes extends Phaser.GameObjects.Sprite {
 
             function randoff() {return (Math.floor(Math.random() * difficulty / 50))};
             this.x = - randoff();
-            this.y = (this.lane * game.config.height/3) + (Math.floor(Math.random()*(game.config.height/3)));
+            this.y = (this.lane * game.config.height/3) - (Math.floor(Math.random()*(game.config.height/3)));
             
             // boolean value if the static will spawn or not, based on difficulty
             function randblank() {return (1.5 - Math.random() - Math.min(0.25, (5000 - (difficulty+1000)) / 5000) < 1)}
@@ -55,7 +55,6 @@ class Snakes extends Phaser.GameObjects.Sprite {
             this.collissions+=1;
             return false;
         } else {
-            this.collissions = 0;
             return true;
         }
     }
