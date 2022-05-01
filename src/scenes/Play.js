@@ -20,6 +20,8 @@ class Play extends Phaser.Scene {
         this.load.image('stick2','./assets/1616sticks02.png');
         this.load.image('stick3','./assets/1616sticks03.png');
         this.load.image('blank','./assets/1616blank.png');
+
+        this.load.spritesheet('slimeBar', 'assets/slimeBar.png', { frameWidth: 192, frameHeight: 32 });
     }
 
     create(){
@@ -68,6 +70,7 @@ class Play extends Phaser.Scene {
         KeyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
         stopped = false; //declare stopped as false
         fast = false; //declare fast as false
+        slime = MAX_SLIME; 
         colliding = false;
         this.anyColliding = false;
 
@@ -82,10 +85,24 @@ class Play extends Phaser.Scene {
         });
         this.playerSlug.play('move'); 
 
+        // SLIME BAR STUFF
+        this.slimeBar = new SlimeBar(this, 192, 32, 'slimeBar', 0);
+        
+        // this will create 60 different animations all with the key name of the number
+        for (let i = 1; i < 61; i++) {
+            this.anims.create({
+                key: "slimeBar_" + String(i),
+                frames: this.anims.generateFrameNumbers('slimeBar', { frames: [ i - 1 ] }),
+                frameRate: 16,
+                repeat: 0,
+            });
+        }
+        
+
         difficulty = 0; //declare difficulty at 0 at the beginning of the game
     }
  
-    update(){0
+    update(){
         difficulty += 1;
 
         if(keyRIGHT.isDown){
@@ -138,6 +155,10 @@ class Play extends Phaser.Scene {
 
         if (this.vol < 1){this.vol+= (1/9000)};
         this.playtheme_dist.setVolume(this.vol);
+
+
+        // ANIMATE SLIMEBAR
+        this.slimeBar.play("slimeBar_" + String(60- Math.floor(slime / (MAX_SLIME / 60))));
     }
 
     checkCollisionSimple(slug, thing){

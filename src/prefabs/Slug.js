@@ -32,9 +32,6 @@ class Slug extends Phaser.GameObjects.Sprite {
         DN_BOUND = game.config.height - this.height - 32;
         LF_BOUND = game.config.width  - 76;
         RT_BOUND = game.config.width  - 64;
-
-        cl()
-
     }
 
 
@@ -89,5 +86,14 @@ class Slug extends Phaser.GameObjects.Sprite {
             this.d.x = Math.min(this.d.x + this.ACC.x, + this.maxd.x);
         }
         // (y) acceleration would go here 
+        
+        if (stopped) {
+            slime -= 1;
+        } else if (fast) {
+            slime -= 3;
+        } else {
+            slime -= 2;
+        }
+    
     }
 }

@@ -18,5 +18,9 @@ let keyUP, keyDOWN, keyRIGHT, KeyLEFT;
 //reserve stopped and fast and colliding bool flag
 let stopped, fast, colliding;
 
+// slime
+const MAX_SLIME = 2000;
+let slime = MAX_SLIME; 
+
 // difficulty
 let difficulty = 0;
