@@ -19,6 +19,7 @@ class Play extends Phaser.Scene {
         this.load.image('stick1','./assets/1616sticks01.png');
         this.load.image('stick2','./assets/1616sticks02.png');
         this.load.image('stick3','./assets/1616sticks03.png');
+        this.load.image('blank','./assets/1616blank.png');
     }
 
     create(){
@@ -26,7 +27,8 @@ class Play extends Phaser.Scene {
         this.add.text(20,20, "oh wow");
         this.vol = 0.0;
         
-        this.statlist = ['rock1','rock2','stick1','stick2','stick3'];    
+        this.statlist = ['blank']
+        //this.statlist = ['rock1','rock2','stick1','stick2','stick3'];    
        
        this.statics = [];
        this.fillRows();
@@ -79,9 +81,13 @@ class Play extends Phaser.Scene {
             repeat: 0
         });
         this.playerSlug.play('move'); 
+
+        difficulty = 0; //declare difficulty at 0 at the beginning of the game
     }
  
-    update(){
+    update(){0
+        difficulty += 1;
+
         if(keyRIGHT.isDown){
             stopped = true; //stop if right key is pressed
             this.playerSlug.anims.stop();
@@ -113,7 +119,7 @@ class Play extends Phaser.Scene {
         this.anyColliding = false;
         this.cols.forEach(element =>{
             element.forEach(elem =>{
-                if(this.checkCollisionSimple(this.playerSlug,elem)){
+                if(this.checkCollisionSimple(this.playerSlug,elem) && !elem.blank){
                     this.anyColliding = true;
                 }
             })
@@ -145,6 +151,7 @@ class Play extends Phaser.Scene {
     }
 
     fillRows(){
+        function randoff(u) { return (Math.random()) * u / 10;} 
        this.r1 = [new Statics(this, -32, 0*game.config.height/5 + 32, this.statlist[Math.floor(Math.random()*5)],0,0).setOrigin(0.75,0.5)];
        this.r2 = [new Statics(this, -32, 1*game.config.height/5 + 32, this.statlist[Math.floor(Math.random()*5)],0,1).setOrigin(0.75,0.5)];
        this.r3 = [new Statics(this, -32, 2*game.config.height/5 + 32, this.statlist[Math.floor(Math.random()*5)],0,2).setOrigin(0.75,0.5)];

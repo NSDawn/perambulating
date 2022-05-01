@@ -17,3 +17,6 @@ let keyUP, keyDOWN, keyRIGHT, KeyLEFT;
 
 //reserve stopped and fast and colliding bool flag
 let stopped, fast, colliding;
+
+// difficulty
+let difficulty = 0;
