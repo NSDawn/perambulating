@@ -20,20 +20,32 @@ class Play extends Phaser.Scene {
         this.load.image('stick2','./assets/1616sticks02.png');
         this.load.image('stick3','./assets/1616sticks03.png');
         this.load.image('blank','./assets/1616blank.png');
+        this.load.spritesheet('snake','./assets/ss_snake_idle.png',{
+            frameWidth: 32,
+            frameHeight: 96,
+            startFrame: 0,
+            endFrame: 6
+        });
+        this.load.spritesheet('snake2','./assets/ss_snake_pounce.png',{
+            frameWidth: 32,
+            frameHeight: 96,
+            startFrame: 0,
+            endFrame: 13
+        });
 
         this.load.spritesheet('slimeBar', 'assets/slimeBar.png', { frameWidth: 192, frameHeight: 32 });
     }
 
     create(){
         this.frame = 0;
-        this.add.text(20,20, "oh wow");
         this.vol = 0.0;
         
         this.statlist = ['blank']
         //this.statlist = ['rock1','rock2','stick1','stick2','stick3'];    
-       
+       this.snakes = [];
        this.statics = [];
        this.fillRows();
+       this.fillERows();
 
        this.cols = [];
        this.col1 = [];
@@ -57,6 +69,30 @@ class Play extends Phaser.Scene {
 
         
        }
+
+       this.enemcols = [];
+       this.enemcol1 = [];
+       this.enemcol2 = [];
+       this.enemcol3 = [];
+       this.enemcol4 = [];
+       this.enemcol5 = [];
+       this.enemcols.push(this.enemcol1,this.enemcol2,this.enemcol3,this.enemcol4,this.enemcol5);
+        
+       for (let index = 0; index < this.enemcols.length; index++) {
+           this.snakes.forEach(element => {
+               this.enemcols[index].push(element[Math.floor(Math.random()*element.length)]);
+
+           });
+           this.emptyERows();
+           this.fillERows();
+           this.enemcols[index].forEach(element => {
+               element.x = index*-game.config.width/5-32;
+               element.texture = this.statlist[Math.floor(Math.random()*3)];
+           });
+
+        
+       }
+
 
        this.playtheme = this.sound.add('main',{loop:true});
         this.playtheme_dist = this.sound.add('main_dist',{volume: 0.0,loop:true,});
@@ -83,6 +119,21 @@ class Play extends Phaser.Scene {
             frameRate: 16,
             repeat: 0
         });
+
+        this.anims.create({
+            key: 'idle',
+            frames: this.anims.generateFrameNumbers('snake', {start: 0, end: 6, first:0}),
+            frameRate: 16,
+            repeat: 0
+        });
+
+        this.anims.create({
+            key: 'attack',
+            frames: this.anims.generateFrameNumbers('snake2', {start: 0, end: 13, first:0}),
+            frameRate: 16,
+            repeat: 0
+        });
+        
         this.playerSlug.play('move'); 
 
         // SLIME BAR STUFF
@@ -103,6 +154,7 @@ class Play extends Phaser.Scene {
     }
  
     update(){
+        if(slime > 0){
         difficulty += 1;
 
         if(keyRIGHT.isDown){
@@ -133,6 +185,13 @@ class Play extends Phaser.Scene {
                 elem.update(stopped,fast,colliding);
             });
         });
+
+        this.enemcols.forEach(element => {
+            element.forEach(elem =>{
+                elem.update(stopped,fast, colliding);
+            });
+        });
+
         this.anyColliding = false;
         this.cols.forEach(element =>{
             element.forEach(elem =>{
@@ -141,6 +200,22 @@ class Play extends Phaser.Scene {
                 }
             })
         });
+
+        this.enemcols.forEach(element =>{
+            element.forEach(elem =>{
+                if(!elem.anims.isPlaying && !elem.blank)
+                {
+                  elem.play('idle');
+                }
+                if(this.checkCollisionSimple(this.playerSlug,elem) && !elem.blank){
+                 if(elem.colcounter()){
+                    slime = 0; 
+                    elem.play('attack');
+                }
+            }
+            });
+        });
+
         colliding = this.anyColliding;
         if(stopped){
             this.playtheme.setRate(0.6);
@@ -159,6 +234,7 @@ class Play extends Phaser.Scene {
 
         // ANIMATE SLIMEBAR
         this.slimeBar.play("slimeBar_" + String(60- Math.floor(slime / (MAX_SLIME / 60))));
+    }
     }
 
     checkCollisionSimple(slug, thing){
@@ -183,6 +259,17 @@ class Play extends Phaser.Scene {
     }
     emptyRows(){
         this.statics = [];
+    }
+
+    fillERows(){
+        function randoff(u) { return (Math.random()) * u / 10;} 
+       this.er1 = [new Snakes(this, -32, 0*game.config.height/3 + 96, this.statlist[Math.floor(Math.random()*5)],0,1).setOrigin(0.75,0.5)];
+       this.er2 = [new Snakes(this, -32, 1*game.config.height/3 + 96, this.statlist[Math.floor(Math.random()*5)],0,2).setOrigin(0.75,0.5)];
+
+       this.snakes.push(this.er1,this.er2);
+    }
+    emptyERows(){
+        this.snakes = [];
     }
 
 

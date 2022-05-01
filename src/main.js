@@ -19,7 +19,7 @@ let keyUP, keyDOWN, keyRIGHT, KeyLEFT;
 let stopped, fast, colliding;
 
 // slime
-const MAX_SLIME = 2000;
+const MAX_SLIME = 20000;
 let slime = MAX_SLIME; 
 
 // difficulty
