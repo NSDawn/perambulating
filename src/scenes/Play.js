@@ -292,7 +292,7 @@ class Play extends Phaser.Scene {
     emptyERows(){
         this.snakes = [];
     }
-    updateScore(){
+    updateScore(){  // score increases 50 points every 5 seconds
         setInterval(() => {
             this.score += 50;
             let divScore = document.getElementById("divScore");
