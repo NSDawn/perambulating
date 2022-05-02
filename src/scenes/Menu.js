@@ -9,8 +9,8 @@ class Menu extends Phaser.Scene {
 
     create(){
         this.add.text(20,20, "Languorous Perambulator");
-        this.add.text(20,40, "Use the arrow keys to move the slug around the obstacles.");
-        this.add.text(20,60, "If you hit an obstacle, the slime bar will reduce faster.");
+        this.add.text(20,40, "Use the arrow keys to move the slug away from the obstacles.");
+        this.add.text(20,60, "If you hit an obstacle, the slime bar will reduce faster.\n");
         this.add.text(20,80, "If the slime bar runs out, the game ends.");
         this.add.text(20,100, "Press the left arrow key to start");
         KeyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
