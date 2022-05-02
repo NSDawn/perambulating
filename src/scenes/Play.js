@@ -151,6 +151,27 @@ class Play extends Phaser.Scene {
         
 
         difficulty = 0; //declare difficulty at 0 at the beginning of the game
+    
+    // initialize score
+    this.score = 0;
+
+    this.updateScore()
+
+
+    // display score
+    let scoreConfig = {
+        fontFamily: 'Impact',
+        fontSize: '80px',
+        backgroundColor: '#F3B141',
+        color: '#843605',
+        align: 'right',
+        padding: {
+            top: 5,
+            bottom: 5,
+        },
+        fixedWidth: 100
+    }
+
     }
  
     update(){
@@ -271,6 +292,14 @@ class Play extends Phaser.Scene {
     emptyERows(){
         this.snakes = [];
     }
-
-
+    updateScore(){
+        setInterval(() => {
+            this.score += 50;
+            let divScore = document.getElementById("divScore");
+            divScore.innerHTML = this.score;
+        },5000)
+       
+    }
+    
+    
 }

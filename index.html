@@ -5,8 +5,21 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=<device-width>, initial-scale=1.0">
     <title>Document</title>
+    <style>
+        .score { 
+            font: "Impact";
+            size: 80px;
+            height: 100px;
+            position: fixed;
+            top: calc(100vh - 30px);
+            left: 80px;
+            z-index: 9999;
+            color: white; 
+        }
+    </style>
 </head>
 <body>
+    <div id="divScore" class="score"></div>
     <script src="./lib/phaser.js"></script>
     <script src="./lib/utilities.js"></script>
     <script src="./src/prefabs/Slug.js"></script>
