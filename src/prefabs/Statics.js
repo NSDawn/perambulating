@@ -41,7 +41,7 @@ class Statics extends Phaser.GameObjects.Sprite {
             this.blank = randblank();
             
             if (!this.blank) {
-                function randmush() {return !(1.5 - Math.random() - Math.min(0.25, (5000 - (difficulty+1000)) / 5000) < 1)}
+                function randmush() {return !(1.5 - Math.random() - Math.min(0.25, (5000 - (difficulty+1000)) / 5000) < 1.1)}
                 this.isMush = randmush();
                 if(this.isMush){
                     this.setTexture('mush');

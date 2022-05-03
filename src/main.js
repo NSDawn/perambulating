@@ -1,3 +1,16 @@
+/*
+    Nishant Suria 
+    Alyse Rose
+    Stephanie Styffe
+
+    Langorous Perambulator
+    05/0X/2022
+
+    Tech Tilt: we made an acelleration and drag system that was not just given to us by the in built physics!
+    Art Tilt: we are proud of our own music which stephanie preformed and recorded and mastered, and our sick 
+    animations that Nishant made
+*/
+
 let config = {
     type: Phaser.CANVAS,
     width: 640,
