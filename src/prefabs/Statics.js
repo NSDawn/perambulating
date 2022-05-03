@@ -8,6 +8,7 @@ class Statics extends Phaser.GameObjects.Sprite {
     this.moveSpeed = 2;
     this.lane = lane;
     this.blank = true;
+    this.isMush = false;
     this.statlist = ['rock1','rock2','stick1','stick2','stick3'];
     }
 
@@ -40,9 +41,17 @@ class Statics extends Phaser.GameObjects.Sprite {
             this.blank = randblank();
             
             if (!this.blank) {
+                function randmush() {return !(1.5 - Math.random() - Math.min(0.25, (5000 - (difficulty+1000)) / 5000) < 1)}
+                this.isMush = randmush();
+                if(this.isMush){
+                    this.setTexture('mush');
+                }
+                else{
                 this.setTexture(this.statlist[Math.floor(Math.random()*this.statlist.length)]);
+                }
             } else {
-                this.setTexture('blank')
+                this.setTexture('blank');
+                this.isMush = false;
             }
                 //if all the statics are just different frames on 1 file we can make them random each time they reset here.
         }

@@ -19,6 +19,7 @@ class Play extends Phaser.Scene {
         this.load.image('stick1','./assets/1616sticks01.png');
         this.load.image('stick2','./assets/1616sticks02.png');
         this.load.image('stick3','./assets/1616sticks03.png');
+        this.load.image('mush','./assets/mush.png')
         this.load.image('blank','./assets/1616blank.png');
         this.load.spritesheet('snake','./assets/ss_snake_idle.png',{
             frameWidth: 32,
@@ -216,9 +217,18 @@ class Play extends Phaser.Scene {
         this.anyColliding = false;
         this.cols.forEach(element =>{
             element.forEach(elem =>{
-                if(!elem.blank && this.checkCollisionSimple(this.playerSlug,elem)){
-                    this.anyColliding = true;
+                if(elem.blank){
+
                 }
+                else if(this.checkCollisionSimple(this.playerSlug,elem)){
+                    if(this.isMush){
+                        slime+= 2000;
+                    }
+                    else{
+                    this.anyColliding = true;
+                    }
+                }
+                
             })
         });
 
