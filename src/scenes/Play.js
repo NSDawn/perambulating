@@ -155,29 +155,31 @@ class Play extends Phaser.Scene {
     
     // initialize score
     this.score = 0;
+    this.score2 = 0;
 
-    this.updateScore()
+    this.updateScore(500)
 
 
     // display score
-    let scoreConfig = {
+    this.scoreConfig = {    
         fontFamily: 'Impact',
-        fontSize: '80px',
+        fontSize: '48px',
         backgroundColor: '#F3B141',
         color: '#843605',
         align: 'right',
         padding: {
             top: 5,
             bottom: 5,
-        },
-        fixedWidth: 100
+        }
     }
+     this.scoretext = this.add.text(game.config.width-200,20, this.score ,this.scoreConfig);
 
     }
  
     update(){
         if(slime > 0){
         difficulty += 1;
+        this.scoretext.setText(this.score);
 
         if(keyRIGHT.isDown){
             stopped = true; //stop if right key is pressed
@@ -269,6 +271,19 @@ class Play extends Phaser.Scene {
 
         // ANIMATE SLIMEBAR
         this.slimeBar.play("slimeBar_" + String(60- Math.floor(slime / (MAX_SLIME / 60))));
+        this.score2 = this.score;
+    }
+    else{
+        this.add.text(game.config.width/2-250,game.config.height/2,'Game over. Score:' + this.score2 ,this.scoreConfig);
+        this.add.text(0,game.config.height/2+75,'press left to return to main menu.' ,this.scoreConfig);
+        
+        if(Phaser.Input.Keyboard.JustDown(KeyLEFT)){
+            this.playtheme.stop();
+        this.playtheme_dist.stop();
+        this.scene.start('menuScene');
+
+        }
+
     }
     }
 
@@ -306,12 +321,17 @@ class Play extends Phaser.Scene {
     emptyERows(){
         this.snakes = [];
     }
-    updateScore(){  // score increases 50 points every 5 seconds
+    updateScore(time){  // score increases 50 points every 5 seconds
         setInterval(() => {
-            this.score += 50;
-            let divScore = document.getElementById("divScore");
-            divScore.innerHTML = this.score;
-        },5000)
+            if(stopped){
+            this.score += 1;
+            }else if(fast && !colliding){
+                this.score += 10;
+            }else{
+                this.score += 5;
+            }
+            
+        },time)
        
     }
     
