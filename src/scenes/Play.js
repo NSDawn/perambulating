@@ -1,3 +1,5 @@
+let sfx;
+let last_played_sfx;
 class Play extends Phaser.Scene {
     constructor(){
         super("playScene");
@@ -6,6 +8,9 @@ class Play extends Phaser.Scene {
     preload(){
         this.load.audio('main', './assets/Play_theme_normal.mp3');
         this.load.audio('main_dist', './assets/Play_theme_distorted.mp3');
+        this.load.audio('dash', './assets/dash.wav');
+        this.load.audio('stop', './assets/stop.wav');
+        this.load.audio('sticks', './assets/stop.wav');
 
         //load the slug and art
         this.load.spritesheet('slug', './assets/ss_slug_lfp.png',{
@@ -67,6 +72,13 @@ class Play extends Phaser.Scene {
                element.x = index*-game.config.width/5;
                element.texture = this.statlist[Math.floor(Math.random()*5)];
            });
+
+        sfx = {
+            "stop" : this.sound.add('stop'),
+            "sticks" : this.sound.add('sticks'),
+            "dash" : this.sound.add('dash'),
+        }
+       
 
         
        }
@@ -182,12 +194,20 @@ class Play extends Phaser.Scene {
         this.scoretext.setText(this.score);
 
         if(keyRIGHT.isDown){
+            if (last_played_sfx != 'stop') {
+                sfx["stop"].play();
+                last_played_sfx = 'stop';
+            }
             stopped = true; //stop if right key is pressed
             this.playerSlug.anims.stop();
         }else{
             stopped = false; //go if not pressed
         }
         if(KeyLEFT.isDown){
+            if (last_played_sfx != 'dash') {
+                sfx["dash"].play();
+                last_played_sfx = 'dash';
+            }
             fast= true; //go fast is left is pressed
             if(!this.playerSlug.anims.isPlaying)
                 {
@@ -200,6 +220,13 @@ class Play extends Phaser.Scene {
                 {
                 this.playerSlug.play('move');
                 }
+        }
+        if (!KeyLEFT.isDown && !keyRIGHT.isDown) {
+            last_played_sfx = '';
+        }
+        if (colliding && last_played_sfx != 'sticks') {
+            sfx["sticks"].play();
+            last_played_sfx = 'sticks';
         }
         
         this.playerSlug.update(stopped,fast); //run slug update function

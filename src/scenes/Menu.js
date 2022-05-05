@@ -5,6 +5,7 @@ class Menu extends Phaser.Scene {
 
     preload(){
         this.load.audio('menu', './assets/menu_theme.mp3');
+        this.load.image('title', './assets/title.png');
     }
 
     create(){
@@ -16,6 +17,8 @@ class Menu extends Phaser.Scene {
         KeyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
         this.menutheme =  this.sound.add('menu',{loop:true});
         this.menutheme.play();
+
+        this.add.image(game.config.width/2, game.config.height/2, 'title');
     }
     update(){
         if(Phaser.Input.Keyboard.JustDown(KeyLEFT)){
