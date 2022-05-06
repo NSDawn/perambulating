@@ -26,6 +26,7 @@ class Play extends Phaser.Scene {
         this.load.image('stick3','./assets/1616sticks03.png');
         this.load.image('mush','./assets/1616mushroom01.png');
         this.load.image('blank','./assets/1616blank.png');
+        this.load.image('bk','./assets/background.png');
         this.load.spritesheet('snake','./assets/ss_snake_idle.png',{
             frameWidth: 32,
             frameHeight: 96,
@@ -45,6 +46,8 @@ class Play extends Phaser.Scene {
     create(){
         this.frame = 0;
         this.vol = 0.0;
+
+        this.back = this.add.tileSprite(0,0,640,320,'bk').setOrigin(0,0);
         
         this.statlist = ['blank']
         //this.statlist = ['rock1','rock2','stick1','stick2','stick3'];    
@@ -197,6 +200,7 @@ class Play extends Phaser.Scene {
             if (last_played_sfx != 'stop') {
                 sfx["stop"].play();
                 last_played_sfx = 'stop';
+                
             }
             stopped = true; //stop if right key is pressed
             this.playerSlug.anims.stop();
@@ -299,6 +303,15 @@ class Play extends Phaser.Scene {
         // ANIMATE SLIMEBAR
         this.slimeBar.play("slimeBar_" + String(60- Math.floor(slime / (MAX_SLIME / 60))));
         this.score2 = this.score;
+        if(stopped){
+            
+        } else if(colliding) {
+            this.back.tilePositionX -= 1;
+        } else if(fast){
+            this.back.tilePositionX -= 4;
+        } else {
+            this.back.tilePositionX -= 2;
+        }
     }
     else{
         this.add.text(game.config.width/2-250,game.config.height/2,'Game over. Score:' + this.score2 ,this.scoreConfig);
